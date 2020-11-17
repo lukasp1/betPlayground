@@ -1,6 +1,7 @@
 import pandas as pd
 import datetime
 import pdb
+import os
 
 # Main function to parse excel file
 def parseExcelFile(fileName):
@@ -52,8 +53,16 @@ def parseExcelFile(fileName):
 
     return games
 
-# TODO: figure out why I have to pass in full path
-games = parseExcelFile('/Users/lukaspranciliauskas/git/betPlayground/files/nfl odds 2020-21.xlsx')
+# Name of Excel sheet you want
+nfl_odds_file = 'nfl odds 2020-21.xlsx'
+# Changes the current working directory up one
+changed_dir = os.chdir('../files')
+# writes the filename for parseExcelFile argument
+path_to_excel_file = os.getcwd() +'/' + nfl_odds_file    
+
+# Leaving this in for reference if you dont like it
+#games = parseExcelFile('/Users/lukaspranciliauskas/git/betPlayground/files/nfl odds 2020-21.xlsx')
+games = parseExcelFile(path_to_excel_file)
 
 totalGames = len(games)
 totalGamesOver7PointDiff = 0
