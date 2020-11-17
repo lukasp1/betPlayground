@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 import pdb
 
-#Tommy was here
+# Main function to parse excel file
 def parseExcelFile(fileName):
     ex_data = pd.read_excel(fileName)
     df = pd.DataFrame(ex_data, columns=['Date', 'Team', 'VH', 'Final', 'Open', 'Close', 'ML'])
