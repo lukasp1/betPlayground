@@ -15,6 +15,10 @@ def parseExcelFile(fileName):
         if index % 2 != 0:
             continue
 
+        # TODO: handle pick em logic
+        if df['Close'].iloc[index] == 'pk' or df['Close'].iloc[index + 1] == 'pk':
+            continue
+
         # There should probably be a better way to do this,
         # but need to find index of underdog as well as favorite
         randomML = int(df['ML'].iloc[index])
@@ -54,23 +58,40 @@ def parseExcelFile(fileName):
     return games
 
 # Name of Excel sheet you want
-nfl_odds_file = 'nfl odds 2020-21.xlsx'
+nfl_odds_files = [
+    'nfl odds 2007-08.xlsx',
+    'nfl odds 2008-09.xlsx',
+    'nfl odds 2009-10.xlsx',
+    'nfl odds 2010-11.xlsx',
+    'nfl odds 2011-12.xlsx',
+    'nfl odds 2012-13.xlsx',
+    'nfl odds 2013-14.xlsx',
+    'nfl odds 2014-15.xlsx',
+    'nfl odds 2015-16.xlsx',
+    'nfl odds 2016-17.xlsx',
+    'nfl odds 2017-18.xlsx',
+    'nfl odds 2018-19.xlsx',
+    'nfl odds 2019-20.xlsx',
+    'nfl odds 2020-21.xlsx',
+]
 # Changes the current working directory up one
 changed_dir = os.chdir('../files')
-# writes the filename for parseExcelFile argument
-path_to_excel_file = os.getcwd() +'/' + nfl_odds_file    
 
-# Leaving this in for reference if you dont like it
-#games = parseExcelFile('/Users/lukaspranciliauskas/git/betPlayground/files/nfl odds 2020-21.xlsx')
-games = parseExcelFile(path_to_excel_file)
+games = []
+for nfl_odds_file in nfl_odds_files:
+    # writes the filename for parseExcelFile argument
+    path_to_excel_file = os.getcwd() +'/' + nfl_odds_file
+    games.extend(parseExcelFile(path_to_excel_file))
 
+print("Total Games:")
 totalGames = len(games)
+print("-------------")
 totalGamesOver7PointDiff = 0
 totalGamesThatCovered = 0
 for game in games:
-    if game["closingSpread"] >= 7:
+    if game["closingSpread"] >= 7 and game["closingSpread"] <= 8.5:
         totalGamesOver7PointDiff += 1
-        if game["pointDifferential"] >= 1:
+        if game["pointDifferential"] >= 3:
             totalGamesThatCovered += 1
 
 print("Results:")
