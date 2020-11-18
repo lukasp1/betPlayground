@@ -83,17 +83,15 @@ for nfl_odds_file in nfl_odds_files:
     path_to_excel_file = os.getcwd() +'/' + nfl_odds_file
     games.extend(parseExcelFile(path_to_excel_file))
 
-print("Total Games:")
-totalGames = len(games)
-print("-------------")
-totalGamesOver7PointDiff = 0
-totalGamesThatCovered = 0
-for game in games:
-    if game["closingSpread"] >= 7 and game["closingSpread"] <= 8.5:
-        totalGamesOver7PointDiff += 1
-        if game["pointDifferential"] >= 3:
-            totalGamesThatCovered += 1
-
-print("Results:")
-print(totalGamesOver7PointDiff)
-print(totalGamesThatCovered / totalGamesOver7PointDiff)
+def calculateTotalTeasedOccurences(min, max, pointsTeased):
+    totalOccurences = 0
+    # We consider an occurence "positive" if
+    totalPositiveOccurences = 0
+    positiveOccurences = []
+    for game in games:
+        if game["closingSpread"] >= min and game["closingSpread"] <= max:
+            totalOccurences += 1
+            if game["pointDifferential"] > game["closingSpread"] - pointsTeased:
+                totalPositiveOccurences += 1
+                positiveOccurences.append(game)
+    return totalOccurences, totalPositiveOccurences, positiveOccurences
