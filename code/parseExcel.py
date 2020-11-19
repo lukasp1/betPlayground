@@ -40,7 +40,7 @@ def parseExcelFile(fileName):
             indexOfFavorite = index + 1
             indexOfUnderdog = index
 
-        spread = int(df['Close'].iloc[indexOfFavorite])
+        spread = float(df['Close'].iloc[indexOfFavorite])
         underdogTotalScore = int(df['Final'].iloc[indexOfUnderdog])
         favoriteTotalScore = int(df['Final'].iloc[indexOfFavorite])
         pointDifferential = favoriteTotalScore - underdogTotalScore
@@ -89,9 +89,9 @@ def calculateTotalTeasedOccurences(min, max, pointsTeased):
     totalPositiveOccurences = 0
     positiveOccurences = []
     for game in games:
-        if game["closingSpread"] >= min and game["closingSpread"] <= max:
+        if float(game["closingSpread"]) >= float(min) and float(game["closingSpread"]) <= float(max):
             totalOccurences += 1
-            if game["pointDifferential"] > game["closingSpread"] - pointsTeased:
+            if float(game["pointDifferential"]) > float(game["closingSpread"]) - float(pointsTeased):
                 totalPositiveOccurences += 1
                 positiveOccurences.append(game)
     return totalOccurences, totalPositiveOccurences, positiveOccurences
