@@ -15,3 +15,5 @@ $ flask run
  Deploy code (jank af):
  tar -zcvf archive-name.tar.gz betPlayground
  scp -i ~/Downloads/pythonserverkey2.pem archive-name.tar.gz ec2-user@ec2-3-138-134-6.us-east-2.compute.amazonaws.com:/home/ec2-user
+
+ tar -xf archive-name.tar.gz

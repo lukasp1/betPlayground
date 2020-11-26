@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import React from 'react'
+import ResultContainer from './resultContainer'
 import styles from '../styles/Home.module.css'
 import axios from 'axios'
 
@@ -11,6 +12,7 @@ class Home extends React.Component {
   }
 
   handleClick = (e) =>  {
+      // Change the url here, i.e. should be http://3.138.134.6/ on node, and http://localhost/ locally
       axios.post('http://localhost:5000/historicTeaserOccurences', {
           min: this.state.minBound,
           max: this.state.maxBound,
@@ -25,7 +27,7 @@ class Home extends React.Component {
         // Make into a for each loop
         for(let i = 0; i < positiveOccurences.length; i++) {
           this.state.elements.push(
-            <li key={i}> "Closing Spread:" {positiveOccurences[i]["closingSpread"]}, "Point Differential" {positiveOccurences[i]["pointDifferential"]}, "Did cover:" {positiveOccurences[i]["didCover"].toString()} </li>
+            <ResultContainer closingSpread={positiveOccurences[i]["closingSpread"]} pointDifferential={positiveOccurences[i]["pointDifferential"]} didCover={positiveOccurences[i]["didCover"].toString()} />
           );
         }
         // Hacky?
