@@ -8,7 +8,7 @@ var positiveOccurences = []
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {minBound: 6, maxBound: 7, pointsTeased: 6, elements: []};
+    this.state = {minBound: 6, maxBound: 7, pointsTeased: 6, elements: [], totalOccurences: "", totalPositiveOccurences: "", positiveOccurenceRatio: "", positiveOccurenceRatioTwoTimes: "", positiveOccurenceRatioThreeTimes: ""};
   }
 
   handleClick = (e) =>  {
@@ -23,6 +23,12 @@ class Home extends React.Component {
           'Access-Control-Allow-Origin': '*'
       }}).then(res => {
         this.state.elements = []
+        this.state.totalOccurences = res.data.totalOccurences
+        this.state.totalPositiveOccurences = res.data.totalPositiveOccurences
+        this.state.positiveOccurenceRatio = res.data.positiveOccurenceRatio
+        this.state.positiveOccurenceRatioTwoTimes = res.data.positiveOccurenceRatioTwoTimes
+        this.state.positiveOccurenceRatioThreeTimes = res.data.positiveOccurenceRatioThreeTimes
+        console.log(res.data)
         positiveOccurences = res.data["positiveOccurences"]
         // Make into a for each loop
         for(let i = 0; i < positiveOccurences.length; i++) {
@@ -79,6 +85,11 @@ class Home extends React.Component {
           <button onClick={this.handleClick()}>Save</button>
         </form>
         <div>
+          <p> Total Occurences: {this.state.totalOccurences}</p>
+          <p> Total Positive Occurences (# of times teased bet hit): {this.state.totalPositiveOccurences} </p>
+          <p> Implied Probability of positive occurence happening: {this.state.positiveOccurenceRatio} </p>
+          <p> Implied Probability of 2 positive occurences happening: {this.state.positiveOccurenceRatioTwoTimes} </p>
+          <p> Implied Probability of 3 positive occurences happening: {this.state.positiveOccurenceRatioThreeTimes} </p>
           {this.state.elements}
         </div>
       </main>

@@ -22,5 +22,7 @@ def hello_world():
         totalPositiveOccurences=totalPositiveOccurences,
         positiveOccurences=positiveOccurences,
         positiveOccurenceRatio=positiveOccurenceRatio,
+        positiveOccurenceRatioTwoTimes=twoTeamTeaserOdds,
+        positiveOccurenceRatioThreeTimes=twoTeamTeaserOdds * positiveOccurenceRatio,
         americanOddsTwoTeam=(twoTeamTeaserOdds * 100)/(1 - twoTeamTeaserOdds)
     )
