@@ -44,6 +44,7 @@ def parseExcelFile(fileName):
         underdogTotalScore = int(df['Final'].iloc[indexOfUnderdog])
         favoriteTotalScore = int(df['Final'].iloc[indexOfFavorite])
         pointDifferential = favoriteTotalScore - underdogTotalScore
+        isHomeFavorite = df['VH'].iloc[indexOfFavorite] == 'H'
 
         games.append({
             "closingSpread": spread,
@@ -52,6 +53,7 @@ def parseExcelFile(fileName):
             "favoriteTeam": str(df['Team'].iloc[indexOfFavorite]),
             "favoriteTotalScore": favoriteTotalScore,
             "pointDifferential": pointDifferential,
+            "isHomeFavorite": isHomeFavorite,
             "didCover": pointDifferential > spread
         })
 
@@ -90,6 +92,19 @@ def calculateTotalTeasedOccurences(min, max, pointsTeased):
     positiveOccurences = []
     for game in games:
         if float(game["closingSpread"]) >= float(min) and float(game["closingSpread"]) <= float(max):
+            totalOccurences += 1
+            if float(game["pointDifferential"]) > float(game["closingSpread"]) - float(pointsTeased):
+                totalPositiveOccurences += 1
+                positiveOccurences.append(game)
+    return totalOccurences, totalPositiveOccurences, positiveOccurences
+
+def calculateTotalTeasedOccurencesForHomeFavorite(min, max, pointsTeased, isHomeFavorite):
+    totalOccurences = 0
+    # We consider an occurence "positive" if the favorite was able to cover the teased amount while playing at home
+    totalPositiveOccurences = 0
+    positiveOccurences = []
+    for game in games:
+        if float(game["closingSpread"]) >= float(min) and float(game["closingSpread"]) <= float(max) and isHomeFavorite and game["isHomeFavorite"]:
             totalOccurences += 1
             if float(game["pointDifferential"]) > float(game["closingSpread"]) - float(pointsTeased):
                 totalPositiveOccurences += 1

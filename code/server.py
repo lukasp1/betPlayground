@@ -1,6 +1,6 @@
 from flask import Flask, request, json, jsonify
 from flask_cors import CORS, cross_origin
-from parseExcel import calculateTotalTeasedOccurences
+from parseExcel import calculateTotalTeasedOccurences, calculateTotalTeasedOccurencesForHomeFavorite
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -11,10 +11,28 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 # Output: JSON with totalOccurences, numPositiveOccurences, array of Positive Occurences
 @app.route('/historicTeaserOccurences', methods=['POST'])
 @cross_origin()
-def hello_world():
+def historic_teaser_occurences():
     json = request.json
     # TODO: add some validation for the min, max, pointsTeased values
     totalOccurences, totalPositiveOccurences, positiveOccurences = calculateTotalTeasedOccurences(json["min"], json["max"], json["pointsTeased"])
+    positiveOccurenceRatio = totalPositiveOccurences / totalOccurences
+    twoTeamTeaserOdds=positiveOccurenceRatio * positiveOccurenceRatio
+    return jsonify(
+        totalOccurences=totalOccurences,
+        totalPositiveOccurences=totalPositiveOccurences,
+        positiveOccurences=positiveOccurences,
+        positiveOccurenceRatio=positiveOccurenceRatio,
+        positiveOccurenceRatioTwoTimes=twoTeamTeaserOdds,
+        positiveOccurenceRatioThreeTimes=twoTeamTeaserOdds * positiveOccurenceRatio,
+        americanOddsTwoTeam=(twoTeamTeaserOdds * 100)/(1 - twoTeamTeaserOdds)
+    )
+
+@app.route('/historicHomeFavoriteTeaserOccurences', methods=['POST'])
+@cross_origin()
+def historic_teaser_occurences_home_favorites():
+    json = request.json
+    # TODO: add some validation for the min, max, pointsTeased values
+    totalOccurences, totalPositiveOccurences, positiveOccurences = calculateTotalTeasedOccurencesForHomeFavorite(json["min"], json["max"], json["pointsTeased"], True)
     positiveOccurenceRatio = totalPositiveOccurences / totalOccurences
     twoTeamTeaserOdds=positiveOccurenceRatio * positiveOccurenceRatio
     return jsonify(

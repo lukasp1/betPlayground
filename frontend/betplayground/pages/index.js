@@ -3,17 +3,20 @@ import React from 'react'
 import ResultContainer from './resultContainer'
 import styles from '../styles/Home.module.css'
 import axios from 'axios'
+const BASE_URL = 'http://localhost:5000'
 
 var positiveOccurences = []
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {minBound: 6, maxBound: 7, pointsTeased: 6, elements: [], totalOccurences: "", totalPositiveOccurences: "", positiveOccurenceRatio: "", positiveOccurenceRatioTwoTimes: "", positiveOccurenceRatioThreeTimes: ""};
+    this.state = {minBound: 6, maxBound: 7, pointsTeased: 6, elements: [], totalOccurences: "", totalPositiveOccurences: "", positiveOccurenceRatio: "", positiveOccurenceRatioTwoTimes: "", positiveOccurenceRatioThreeTimes: "", homeFavoritesOnly: false};
   }
 
   handleClick = (e) =>  {
       // Change the url here, i.e. should be http://3.138.134.6/ on node, and http://localhost/ locally
-      axios.post('http://localhost:5000/historicTeaserOccurences', {
+      let targetUrl = BASE_URL;
+      targetUrl += this.state.homeFavoritesOnly ? '/historicHomeFavoriteTeaserOccurences' : '/historicTeaserOccurences';
+      axios.post(targetUrl, {
           min: this.state.minBound,
           max: this.state.maxBound,
           pointsTeased: this.state.pointsTeased
@@ -53,6 +56,10 @@ class Home extends React.Component {
       this.setState({pointsTeased: event.target.value});
   }
 
+  changeHomeFavoritesOnly = (e) => {
+      this.setState({homeFavoritesOnly: event.target.checked});
+  }
+
   render() {
     return (
     <div className={styles.container}>
@@ -80,6 +87,9 @@ class Home extends React.Component {
             <option value="6">6</option>
             <option value="7">7</option>
           </select>
+          <label> Choose if you only want home favorites:
+            <input name="isGoing" type="checkbox" onChange={this.changeHomeFavoritesOnly} />
+          </label>
           <button type="button" onClick={this.handleClick}>Save</button>
         </form>
         <div>
