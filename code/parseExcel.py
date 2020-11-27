@@ -85,7 +85,7 @@ for nfl_odds_file in nfl_odds_files:
 
 def calculateTotalTeasedOccurences(min, max, pointsTeased):
     totalOccurences = 0
-    # We consider an occurence "positive" if
+    # We consider an occurence "positive" if the favorite was able to cover the teased amount
     totalPositiveOccurences = 0
     positiveOccurences = []
     for game in games:

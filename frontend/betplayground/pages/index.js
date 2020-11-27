@@ -24,11 +24,11 @@ class Home extends React.Component {
       }}).then(res => {
         this.state.elements = []
         this.state.totalOccurences = res.data.totalOccurences
-        this.state.totalPositiveOccurences = res.data.totalPositiveOccurences
-        this.state.positiveOccurenceRatio = res.data.positiveOccurenceRatio
-        this.state.positiveOccurenceRatioTwoTimes = res.data.positiveOccurenceRatioTwoTimes
-        this.state.positiveOccurenceRatioThreeTimes = res.data.positiveOccurenceRatioThreeTimes
-        console.log(res.data)
+        this.setState({totalOccurences: res.data.totalOccurences});
+        this.setState({totalPositiveOccurences: res.data.totalPositiveOccurences});
+        this.setState({positiveOccurenceRatio: res.data.positiveOccurenceRatio});
+        this.setState({positiveOccurenceRatioTwoTimes: res.data.positiveOccurenceRatioTwoTimes});
+        this.setState({positiveOccurenceRatioThreeTimes: res.data.positiveOccurenceRatioThreeTimes});
         positiveOccurences = res.data["positiveOccurences"]
         // Make into a for each loop
         for(let i = 0; i < positiveOccurences.length; i++) {
@@ -36,8 +36,6 @@ class Home extends React.Component {
             <ResultContainer closingSpread={positiveOccurences[i]["closingSpread"]} pointDifferential={positiveOccurences[i]["pointDifferential"]} didCover={positiveOccurences[i]["didCover"].toString()} />
           );
         }
-        // Hacky?
-        this.setState({state: this.state})
       }).catch(err => {
         console.log('error in request', err);
       });
@@ -63,26 +61,26 @@ class Home extends React.Component {
           <a>Welcome to betPlayground!</a>
         </h1>
         <form>
-          <label for="minBound">Choose a min bound for Spread:</label>
+          <label htmlFor="minBound">Choose a min bound for Spread:</label>
           <select id="minBound" name="minBound" value={this.state.minBound} onChange={this.changeMinBound}>
             <option value="6">6</option>
             <option value="6.5">6.5</option>
             <option value="7">7</option>
             <option value="7.5">7.5</option>
           </select>
-          <label for="maxBound">Choose a max bound for Spread:</label>
+          <label htmlFor="maxBound">Choose a max bound for Spread:</label>
           <select id="maxBound" name="maxBound" value={this.state.maxBound} onChange={this.changeMaxBound}>
             <option value="6">6</option>
             <option value="6.5">6.5</option>
             <option value="7">7</option>
             <option value="7.5">7.5</option>
           </select>
-          <label for="pointsTeased">Choose how many points to tease:</label>
+          <label htmlFor="pointsTeased">Choose how many points to tease:</label>
           <select id="pointsTeased" name="pointsTeased" value={this.state.pointsTeased} onChange={this.changePointsTeased}>
             <option value="6">6</option>
             <option value="7">7</option>
           </select>
-          <button onClick={this.handleClick()}>Save</button>
+          <button type="button" onClick={this.handleClick}>Save</button>
         </form>
         <div>
           <p> Total Occurences: {this.state.totalOccurences}</p>
@@ -90,7 +88,6 @@ class Home extends React.Component {
           <p> Implied Probability of positive occurence happening: {this.state.positiveOccurenceRatio} </p>
           <p> Implied Probability of 2 positive occurences happening: {this.state.positiveOccurenceRatioTwoTimes} </p>
           <p> Implied Probability of 3 positive occurences happening: {this.state.positiveOccurenceRatioThreeTimes} </p>
-          {this.state.elements}
         </div>
       </main>
     </div>
